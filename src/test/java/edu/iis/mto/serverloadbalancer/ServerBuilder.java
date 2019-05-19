@@ -7,7 +7,11 @@ public class ServerBuilder {
         return this;
     }
 
-    private static Server build() {
+    public static Server build() {
         return new Server();
+    }
+
+    public static ServerBuilder  server (){
+        return new ServerBuilder();
     }
 }

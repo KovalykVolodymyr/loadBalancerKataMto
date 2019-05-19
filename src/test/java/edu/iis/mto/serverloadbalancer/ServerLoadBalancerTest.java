@@ -23,12 +23,10 @@ public class ServerLoadBalancerTest {
 	public void balanciServerWithoutVmServerEmpty (){
 		Server theServer = a(server().withCapacity(1));
 		balancing(aServersListWith(theServer),anEmtyList());
-		assertThat(theServer,hasCurrentLoaadOf(0.0d));
+		assertThat(theServer,CurrentLoadPercentageMatcher.hasCurrentLoaadOf(0.0d));
 	}
 
-	private Matcher< ? super Server> hasCurrentLoaadOf(double expectedLoadPercentage) {
-		return new CurrentLoadPercentageMatcher(expectedLoadPercentage);
-	}
+
 
 	private void balancing(Server[] servers, Vm[] vms) {
 		new ServerLoadBalancer().balance(servers,vms);
