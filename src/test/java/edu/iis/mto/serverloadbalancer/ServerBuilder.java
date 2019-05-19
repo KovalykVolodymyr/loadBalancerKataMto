@@ -6,8 +6,11 @@ public class ServerBuilder implements Builder<Server>{
         this.capacity= capacity;
         return this;
     }
+    private VmBuilder vm() {
+        return new VmBuilder();
+    }
 
-    public static Server build() {
+    public  Server build() {
         return new Server();
     }
 

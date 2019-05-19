@@ -1,6 +1,8 @@
 package edu.iis.mto.serverloadbalancer;
 
 
+import static edu.iis.mto.serverloadbalancer.CurrentLoadPercentageMatcher.hasCurrentLoaadOf;
+import static edu.iis.mto.serverloadbalancer.VmBuilder.vm;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -23,26 +25,26 @@ public class ServerLoadBalancerTest {
     public void balanciServerWithoutVmServerEmpty() {
         Server theServer = a(server().withCapacity(1));
         balancing(aServersListWith(theServer), anEmtyList());
-        assertThat(theServer, CurrentLoadPercentageMatcher.hasCurrentLoaadOf(0.0d));
+        assertThat(theServer, hasCurrentLoaadOf(0.0d));
     }
 
     @Test
-    public void balancingOneServerWithoneSlotCapacity_andOneSlotVm_fillisServerWithTheVm() {
-
+    public void balancingOneServerWithOneSlotCapacity_andOneSlotVm_fillsTheServerWithTheVm(){
         Server theServer = a(server().withCapacity(1));
-        Vm theVm =a(VmBuilder.vm().ofSize(1));
-        balancing(aServersListWith(theServer), aVmListWith(theVm));
-        assertThat(theServer, CurrentLoadPercentageMatcher.hasCurrentLoaadOf(100.0d));
-        assertThat("server should contain the vm ",theServer.contains(theVm));
+        Vm theVm = a(vm().ofSize(1));
+        balancing(aServersListWith(theServer), aVmsListWith(theVm));
+
+        assertThat(theServer, hasCurrentLoaadOf(100.0d));
+        assertThat("the server should contain vm", theServer.contains(theVm));
     }
 
-    private Vm[] aVmListWith(Vm... vms) {
-        return vms;
+    private Vm[] aVmsListWith(Vm vm) {
+        return new Vm[]{vm};
     }
 
-
-
-
+    private Vm a(VmBuilder builder) {
+        return builder.build();
+    }
 
     private void balancing(Server[] servers, Vm[] vms) {
         new ServerLoadBalancer().balance(servers, vms);
@@ -56,7 +58,7 @@ public class ServerLoadBalancerTest {
         return servers;
     }
 
-    private <T> a(Builder<T> builder){
+    private <T> T a(Builder<T> builder){
        return  builder.build();
     }
 
