@@ -47,8 +47,24 @@ public class ServerLoadBalancerTest {
         assertThat("the server should contain vm", theServer.contains(theVm));
     }
 
-    private Vm[] aVmsListWith(Vm vm) {
-        return new Vm[]{vm};
+    @Test
+    public void balancingTheServerWithEnoughRoom_fillsTheServerWithAllVms(){
+        Server theServer = a(server().withCapacity(100));
+        Vm theFirstVm = a(vm().ofSize(1));
+        Vm theSecondVm = a(vm().ofSize(1));
+        balancing(aServersListWith(theServer), aVmsListWith(theFirstVm,theSecondVm));
+
+        assertThat(theServer, ServerVmsCountMatcher.hasAVmCountOf(2));
+        assertThat("the server should contain first vm", theServer.contains(theFirstVm));
+        assertThat("the server should contain Second vm", theServer.contains(theSecondVm));
+    }
+
+    private Matcher<? super Server > hasAVmCountOf(int expectedVmCount) {
+        return new ServerVmsCountMatcher(expectedVmCount);
+    }
+
+    private Vm[] aVmsListWith(Vm... vm) {
+        return vm;
     }
 
     private Vm a(VmBuilder builder) {
