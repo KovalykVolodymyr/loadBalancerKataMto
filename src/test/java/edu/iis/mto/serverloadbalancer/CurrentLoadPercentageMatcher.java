@@ -6,6 +6,7 @@ import org.hamcrest.TypeSafeMatcher;
 import org.junit.Before;
 
 public class CurrentLoadPercentageMatcher extends TypeSafeMatcher<Server> {
+    public static final double KPSLION = 0.01d;
     private double expectedLoadPercentage;
 
     public CurrentLoadPercentageMatcher(double expectedLoadPercentage) {
@@ -31,7 +32,7 @@ public class CurrentLoadPercentageMatcher extends TypeSafeMatcher<Server> {
     }
 
     private boolean doubblesAreEqual(double d1, double d2) {
-        return d1 == d2 || Math.abs(d1 - d2) < 0.01d;
+        return d1 == d2 || Math.abs(d1 - d2) < KPSLION;
     }
 
     public static CurrentLoadPercentageMatcher hasCurrentLoaadOf(double expectedLoadPercentage) {
