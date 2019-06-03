@@ -32,7 +32,7 @@ public class ServerLoadBalancer {
     private Server findLessLoadedServer(Server[] servers) {
         Server lessLoadServer =null;
         for (Server server :servers){
-            if (lessLoadServer == null || server.currentLoadPercetage <lessLoadServer.currentLoadPercetage){
+            if (lessLoadServer == null || server.getCurrentLoadPercetage() < lessLoadServer.getCurrentLoadPercetage()){
                 lessLoadServer = server;
             }
         }
