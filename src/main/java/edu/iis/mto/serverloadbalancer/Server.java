@@ -21,7 +21,7 @@ public class Server {
     }
 
     public void addVm(Vm vm) {
-        currentLoadPercetage = loadOfVm(vm);
+        currentLoadPercetage += loadOfVm(vm);
         this.vms.add(vm);
     }
 
