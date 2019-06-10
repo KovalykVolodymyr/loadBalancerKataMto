@@ -5,6 +5,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 public class CurreentLoadPercentegeMatcher extends TypeSafeMatcher<Server> {
+    public static final double EXPSILON = 0.01;
     private double excpectedLoadPercentage;
 
     public CurreentLoadPercentegeMatcher(double excpectedLoadPercentage) {
@@ -23,7 +24,7 @@ public class CurreentLoadPercentegeMatcher extends TypeSafeMatcher<Server> {
     }
 
     private boolean doublesAreEqual(double d1, double d2) {
-        return d1 == d2 || Math.abs(d1 - d2)< 0.01;
+        return d1 == d2 || Math.abs(d1 - d2)< EXPSILON;
     }
 
     @Override
