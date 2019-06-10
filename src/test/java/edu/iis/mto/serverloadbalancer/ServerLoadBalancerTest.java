@@ -3,6 +3,7 @@ package edu.iis.mto.serverloadbalancer;
 
 import static edu.iis.mto.serverloadbalancer.CurreentLoadPercentegeMatcher.hasCurrentLoadOf;
 import static edu.iis.mto.serverloadbalancer.ServerBuilder.server;
+import static edu.iis.mto.serverloadbalancer.VmBuilder.vm;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -24,6 +25,20 @@ public class ServerLoadBalancerTest {
 		assertThat(theServer, hasCurrentLoadOf(0.0d));
 
 	}
+	@Test
+	public void balancingOneServerWithOneSloteCapacity_andOneSloteVm_fillsServerwiththeVm(){
+		Server theServer =a(server().withCapacity(1));
+		Vm theVm =a(vm().ofsize(1));
+		balancing(aServerListWith(theServer),aVmsListWith(theVm));
+
+		assertThat(theServer, hasCurrentLoadOf(100.0d));
+		assertThat("serve should contain the vm ", theServer.contains(theVm));
+	}
+
+	private Vm[] aVmsListWith(Vm... vms) {
+		return vms;
+	}
+
 
 
 
@@ -39,9 +54,10 @@ public class ServerLoadBalancerTest {
 		return new Server[0];
 	}
 
-	private Server a(ServerBuilder builder) {
+	private <T> T a(Builder<T> builder){
 		return builder.build();
 	}
+
 
 
 }
