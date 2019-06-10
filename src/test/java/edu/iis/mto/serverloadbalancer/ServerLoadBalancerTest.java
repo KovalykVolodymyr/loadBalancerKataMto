@@ -67,6 +67,15 @@ public void vmshoulBalanceonLessLoadedServerFirst(){
 	assertThat(" less loaded serve should contain the vm ", lessLoadedServer.contains(theFirst));
 	assertThat("more loadedserve should not contain the seconde vm ", !moreLoadedServer.contains(theFirst));
 }
+@Test
+public void balancingServerWithNotWithNoEnougRoom_shouldNotBeFillerdWithTheVm(){
+	Server theServer =a(server().withCapacity(10).withCurrentLoadOf(90.0d));
+	Vm theVm =a(vm().ofsize(1));
+	balancing(aServerListWith(theServer),aVmsListWith(theVm));
+	assertThat("server should not contain the seconde vm ", !theServer.contains(theVm));
+
+
+}
 
 
 	private Vm[] aVmsListWith(Vm... vms) {
